@@ -1,2 +1,6 @@
-A Simple Calculator developed using HTML/CSS & JavaScript
-<a href="https://ibb.co/rG4JD08"><img src="https://i.ibb.co/TBm592j/11.png" alt="11" border="0"></a>
+A Simple Calculator developed using HTML/CSS & JavaScript.
+Developement Progress (50%):
+  - Layout & Design (HTML/CSS): 100%
+  - Logic (JavaScript) : 0%
+  
+<img src="https://i.ibb.co/TBm592j/11.png" alt="11" border="0">
