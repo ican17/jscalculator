@@ -80,7 +80,7 @@ body{
     background-color: rgb(20, 20, 20);
     color: white;
 }
-.operator{
+.operator, .parenth{
     background-color: white;
 }
 .eval{
