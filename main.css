@@ -46,7 +46,7 @@ body{
 .calculator-body{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
     align-items: center;
     gap: 0.3vh;
     height: 50vh;
@@ -88,3 +88,7 @@ body{
 }
 
 
+.white{
+    background-color: white;
+    color:black;
+}
