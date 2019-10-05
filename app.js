@@ -3,6 +3,9 @@ const digit = document.querySelectorAll(".digit");
 const op = document.querySelectorAll(".operator");
 const parenth = document.querySelectorAll(".parenth");
 const eval = document.querySelector(".eval span");
+const displayExpr = document.querySelector(".expression");
+const displyEval = document.querySelector(".evaluation");
+let completeExpr = "";
 let expression = "";
 let operand;
 const operands =[];
@@ -44,9 +47,11 @@ function getOperand(e){
     if (e.target) {
         //check if the expression is valid?
         if(validExpression(e.target.textContent, "operand")){
+
              // do the concatination
             expression += e.target.textContent; 
             previous = "OPERAND";
+            completeExpr += e.target.textContent;
             //update the display of the expression on the screen
             updateExpression(); 
         }else{
@@ -61,7 +66,7 @@ function parenthClicked(e){
     if (e.target) {
         //check if the expression is valid?
         if(validExpression(e.target.textContent, "parenth")){
-            
+            completeExpr += e.target.textContent;
             if(expression != ""){// if it's an operand
                 operands.push(Number(expression));
                 // reintialize the expression variable to recieve a new operand
@@ -116,6 +121,7 @@ function getOperator(e){
     if (e.target) {
         //check if the expression is valid?
         if(validExpression(e.target.textContent, "operator")){
+            completeExpr += e.target.textContent;
             previous= "OPERATOR";
             // push the Operand
             if(expression != ""){// if it's an operand
@@ -130,7 +136,7 @@ function getOperator(e){
                 const rightOp = operands.pop();
                 const leftOp = operands.pop();
                 const op = operators.pop();
-                console.log(op);
+
                 switch (op) {
                     case "+":
                         operands.push(Number(leftOp) + Number(rightOp));                   
@@ -169,7 +175,7 @@ function evalCLicked(e){
     if(e.target){
         //check if the expression is valid?
         if(validExpression(e.target.textContent, "eval")){
-            previous= "";
+            previous= "EVAL";
             // push the operand
             if (expression != "") {
                 operands.push(Number(expression));
@@ -182,7 +188,7 @@ function evalCLicked(e){
                 if(op !== "("){ // IN case the user forget to add the final closing parenthesis
                     const rightOp = operands.pop();
                     const leftOp = operands.pop();
-                    
+
                     switch (op) {
                         case "+":
                             operands.push(Number(leftOp) + Number(rightOp));                   
@@ -206,6 +212,10 @@ function evalCLicked(e){
                 }
                 
             }
+
+            displayExpr.innerHTML = operands[operands.length-1];
+            displyEval.innerHTML = operands[operands.length-1];
+            completeExpr = operands[operands.length-1];
             console.log(operands); // display the final result
         }else{
             // specify why? error or need to evaluate?
@@ -218,14 +228,14 @@ function evalCLicked(e){
 }
 
 function updateExpression(){
-    //console.log(operators, operands);
+    displayExpr.innerHTML = completeExpr;
+    displyEval.innerHTML = expression;
 }
 
 function validExpression(fraction, type){
 
     if (type === "operator") {
-        if(previous === "OPERAND" || previous === "CLOSING PARENTH"){ 
-            console.log(previous);
+        if(previous === "OPERAND" || previous === "CLOSING PARENTH" || previous === "EVAL"){ 
             const regex = /^[\+\-x/\^]$/;
             if(regex.test(fraction)){
                 return true;
@@ -234,8 +244,7 @@ function validExpression(fraction, type){
         return false;
        
     } else if(type === "operand") { 
-        if(previous === "OPERATOR" || previous === "OPENING PARENTH" || previous === ""){ 
-            console.log(previous);
+        if(previous === "OPERATOR" || previous === "OPENING PARENTH" || previous === "" || previous === "OPERAND"){ 
             let expr = expression + fraction;
             const regex = /^([0-9]+)([\.][0-9]*){0,1}$/;
             if(regex.test(expr)){
@@ -248,13 +257,11 @@ function validExpression(fraction, type){
         if(regex.test(fraction)){
             if(fraction.match(regex) == "("){
                 if(previous === "OPERATOR" || previous === "OPENING PARENTH" || previous === ""){
-                    console.log(previous);
                     return true;
                 }
 
             }else{
                 if(previous === "OPERAND" || previous === "CLOSING PARENTH" ){
-                    console.log(previous);
                     return true;
                 }
             }
@@ -262,7 +269,6 @@ function validExpression(fraction, type){
         return false;
     }else if(type == "eval"){
         if(previous === "OPERAND" || previous === "CLOSING PARENTH" ||previous === ""){
-            console.log(previous);
             const regex = /^=$/;
             if(regex.test(fraction)){
                 return true;
