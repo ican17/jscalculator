@@ -1,4 +1,5 @@
 A Simple Calculator developed using HTML/CSS & JavaScript.
+
 This Calculator is using the Shunting Yard Algorithm by Edgar Dijkstra.
 
 Developement Progress (50%):
@@ -10,4 +11,5 @@ Developement Progress (50%):
 What to do next:
   - Change the preview of the button when the user click on it.
   -...
-Find the project on <a href="https://codepen.io/ican17/pen/mdddmEd">CodePen</a>
+ 
+ Find the project on <a href="https://codepen.io/ican17/pen/mdddmEd">CodePen</a>
