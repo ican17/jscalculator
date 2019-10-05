@@ -10,7 +10,6 @@ Developement Progress (50%):
 
 What to do next:
   - Change the preview of the button when the user click on it.
-  
-  -...
+  - Brainstorming...
  
  Find the project on <a href="https://codepen.io/ican17/pen/mdddmEd">CodePen</a>
