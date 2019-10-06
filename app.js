@@ -5,6 +5,7 @@ const parenth = document.querySelectorAll(".parenth");
 const eval = document.querySelector(".eval span");
 const displayExpr = document.querySelector(".expression");
 const displyEval = document.querySelector(".evaluation");
+const reinitialize =  document.querySelector(".reinitialize");
 let completeExpr = "";
 let expression = "";
 let operand;
@@ -36,13 +37,26 @@ function eventListeners(){
         item.addEventListener("click", parenthClicked);
     });
 
-    eval.addEventListener("click", evalCLicked)
+    eval.addEventListener("click", evalCLicked);
+    reinitialize.addEventListener("click", reinitializeAll);
     
 }
 
 eventListeners();
 // functions
-
+function reinitializeAll(e){
+    if(e.target){
+        previous ="";
+        completeExpr = "";
+        expression = "";
+        operand;
+        operands.length = 0;
+        operators.length = 0;
+        displayExpr.innerHTML = "";
+        displyEval.innerHTML = "0";
+    }
+    
+}
 function getOperand(e){
     if (e.target) {
         //check if the expression is valid?
@@ -216,7 +230,7 @@ function evalCLicked(e){
             displayExpr.innerHTML = operands[operands.length-1];
             displyEval.innerHTML = operands[operands.length-1];
             completeExpr = operands[operands.length-1];
-            console.log(operands); // display the final result
+            // console.log(operands); // display the final result
         }else{
             // specify why? error or need to evaluate?
             console.log("Invalide Expression");
