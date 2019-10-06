@@ -24,7 +24,16 @@ body{
 .item:not(:last-child) {
     margin-bottom: 1vh;
   }
+.calculator-error-msg{
+    background-color: rgb(214, 97, 97, 0.5); 
+    text-align: center;
+    padding : 1vh 0;
+    display: none;
+}
 
+.show{
+    display: block;
+}
 .calculator-header, .calculator-footer{
     background-color: rgb(160, 158, 158); 
     height: 5vh;
@@ -58,9 +67,11 @@ body{
     height: 100%;     
 }
 .grid-item span{
-    padding-top: 10%;
+
+    padding: 10% 0;
     display: block;
-    font-size: 5vh;
+    font-size: 4vh;
+    height: 100%;
 }
 .result{
     grid-column: span 4;
@@ -91,4 +102,19 @@ body{
 .white{
     background-color: white;
     color:black;
+}
+
+.digit-clicked {
+    background-color: rgb(255, 255, 255); 
+    color: rgb(0, 0, 0);
+}
+
+.operator-clicked {
+    background-color:  rgb(255, 136, 0);
+    color: rgb(255, 255, 255);
+}
+
+.eval-clicked{
+    background-color: rgb(255, 255, 255); 
+    color: rgb(0, 0, 0);
 }

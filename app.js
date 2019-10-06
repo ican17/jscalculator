@@ -6,6 +6,7 @@ const eval = document.querySelector(".eval span");
 const displayExpr = document.querySelector(".expression");
 const displyEval = document.querySelector(".evaluation");
 const reinitialize =  document.querySelector(".reinitialize");
+const displayErrMsg = document.querySelector(".calculator-error-msg");
 let completeExpr = "";
 let expression = "";
 let operand;
@@ -27,10 +28,12 @@ function eventListeners(){
 
     digit.forEach((item)=>{
         item.addEventListener("click", getOperand);
+        item.addEventListener("click", changeStyle);
     });
 
     op.forEach((item)=>{
         item.addEventListener("click", getOperator);
+        item.addEventListener("click", changeStyle);
     });
 
     parenth.forEach((item)=>{
@@ -38,12 +41,16 @@ function eventListeners(){
     });
 
     eval.addEventListener("click", evalCLicked);
+    eval.addEventListener("click", changeStyle);
     reinitialize.addEventListener("click", reinitializeAll);
     
 }
 
 eventListeners();
-// functions
+
+// FUNCTIONS :
+
+/** 1 : FOR THE CALCULATOR FUNCTIONS */
 function reinitializeAll(e){
     if(e.target){
         previous ="";
@@ -70,7 +77,7 @@ function getOperand(e){
             updateExpression(); 
         }else{
             // specify why? error or need to evaluate?
-            console.log("Invalide Expression");
+            displayErrorMsg("Invalide Expression");
         }
         
     }
@@ -99,25 +106,7 @@ function parenthClicked(e){
                     const leftOp = operands.pop();
                     const op = operators.pop();
                 
-                    switch (op) {
-                        case "+":
-                            operands.push(Number(leftOp) + Number(rightOp));                   
-                            break;
-                        case "-":
-                                operands.push(Number(leftOp) - Number(rightOp));                   
-                            break;
-                        case "/":
-                                operands.push(Number(leftOp) / Number(rightOp));                   
-                            break;
-                        case "x":
-                                operands.push(Number(leftOp) * Number(rightOp));                   
-                            break;
-                        case "^":
-                                operands.push(Math.pow(Number(leftOp), Number(rightOp)));                   
-                            break;
-                        default:
-                            break;
-                    } 
+                    doEvaluation(op, leftOp, rightOp)
                 }
                 operators.pop(); // pop the left parenthesis
 
@@ -125,7 +114,7 @@ function parenthClicked(e){
             updateExpression(); 
         }else{
             // specify why? error or need to evaluate?
-            console.log("Invalide Expression");
+            displayErrorMsg("Invalide Expression");
         }
         
     }
@@ -151,32 +140,14 @@ function getOperator(e){
                 const leftOp = operands.pop();
                 const op = operators.pop();
 
-                switch (op) {
-                    case "+":
-                        operands.push(Number(leftOp) + Number(rightOp));                   
-                        break;
-                    case "-":
-                            operands.push(Number(leftOp) - Number(rightOp));                   
-                        break;
-                    case "/":
-                            operands.push(Number(leftOp) / Number(rightOp));                   
-                        break;
-                    case "x":
-                            operands.push(Number(leftOp) * Number(rightOp));                   
-                        break;
-                    case "^":
-                            operands.push(Math.pow(Number(leftOp), Number(rightOp)));                   
-                        break;
-                    default:
-                        break;
-                } 
+                doEvaluation(op, leftOp, rightOp)
             }
 
             operators.push(e.target.textContent);
             updateExpression();
         }else{
             // specify why? error or need to evaluate?
-            console.log("Invalide Expression");
+            displayErrorMsg("Invalide Expression");
         }
         
     }
@@ -203,37 +174,21 @@ function evalCLicked(e){
                     const rightOp = operands.pop();
                     const leftOp = operands.pop();
 
-                    switch (op) {
-                        case "+":
-                            operands.push(Number(leftOp) + Number(rightOp));                   
-                            break;
-                        case "-":
-                                operands.push(Number(leftOp) - Number(rightOp));                   
-                                break;
-                        case "/":
-                                operands.push(Number(leftOp) / Number(rightOp));                   
-                                break;
-                        case "x":
-                                operands.push(Number(leftOp) * Number(rightOp));                   
-                                break;
-                        case "^":
-                                operands.push(Math.pow(Number(leftOp), Number(rightOp)));                   
-                                break;
-                        default:
-                            break;
-                    } 
+                    doEvaluation(op, leftOp, rightOp)
                 
                 }
                 
             }
-
-            displayExpr.innerHTML = operands[operands.length-1];
-            displyEval.innerHTML = operands[operands.length-1];
-            completeExpr = operands[operands.length-1];
+            if(operands.length != 0 ){
+                displayExpr.innerHTML = operands[operands.length-1];
+                displyEval.innerHTML = operands[operands.length-1];
+                completeExpr = operands[operands.length-1];
+            }
+            
             // console.log(operands); // display the final result
         }else{
             // specify why? error or need to evaluate?
-            console.log("Invalide Expression");
+            displayErrorMsg("Invalide Expression");
         }
 
         
@@ -282,7 +237,7 @@ function validExpression(fraction, type){
         }
         return false;
     }else if(type == "eval"){
-        if(previous === "OPERAND" || previous === "CLOSING PARENTH" ||previous === ""){
+        if(previous === "OPERAND" || previous === "CLOSING PARENTH" ){
             const regex = /^=$/;
             if(regex.test(fraction)){
                 return true;
@@ -292,4 +247,67 @@ function validExpression(fraction, type){
         return false;
     }
    
+}
+
+function doEvaluation(op, leftOp, rightOp){
+    switch (op) {
+        case "+":
+            operands.push(Number(leftOp) + Number(rightOp));                   
+            break;
+        case "-":
+                operands.push(Number(leftOp) - Number(rightOp));                   
+                break;
+        case "/":
+                if( Number(rightOp) != 0){
+                    operands.push(Number(leftOp) / Number(rightOp));
+                }else{
+                    displayErrorMsg("Division by zero not allowed!");
+                }
+                                   
+                break;
+        case "x":
+                operands.push(Number(leftOp) * Number(rightOp));                   
+                break;
+        case "^":
+                operands.push(Math.pow(Number(leftOp), Number(rightOp)));                   
+                break;
+        default:
+            break;
+    }
+}
+
+/** FOR THE CALCULATOR STYLE AND UX */
+function changeStyle(e){
+    if(e.target){
+        const elm = e.target.parentElement;
+        if(elm.classList.contains("digit")){
+            changeStyleClass(elm, "digit", "digit-clicked");
+        }else if(elm.classList.contains("operator")){
+            changeStyleClass(elm, "operator", "operator-clicked");
+        }else if(elm.classList.contains("eval")){
+            changeStyleClass(elm, "eval", "eval-clicked");
+        }
+        
+        
+    }
+}
+
+function changeStyleClass(elm, initial, to){
+    elm.classList.toggle(initial);
+    elm.classList.add(to);
+    setTimeout(() => {
+        elm.classList.remove(to);
+        elm.classList.toggle(initial);
+    }, 300);
+}
+
+function displayErrorMsg(msg){
+
+    displayErrMsg.classList.add("show");
+    displayErrMsg.textContent = msg;
+    setTimeout(() => {
+        displayErrMsg.classList.remove("show");
+        displayErrMsg.textContent = "";
+    }, 1000);
+
 }
