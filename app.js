@@ -51,8 +51,7 @@ eventListeners();
 // FUNCTIONS :
 
 /** 1 : FOR THE CALCULATOR FUNCTIONS */
-function reinitializeAll(e){
-    if(e.target){
+function reinitializeAll(e = null){
         previous ="";
         completeExpr = "";
         expression = "";
@@ -61,7 +60,6 @@ function reinitializeAll(e){
         operators.length = 0;
         displayExpr.innerHTML = "";
         displyEval.innerHTML = "0";
-    }
     
 }
 function getOperand(e){
@@ -262,6 +260,7 @@ function doEvaluation(op, leftOp, rightOp){
                     operands.push(Number(leftOp) / Number(rightOp));
                 }else{
                     displayErrorMsg("Division by zero not allowed!");
+                    reinitializeAll();
                 }
                                    
                 break;
